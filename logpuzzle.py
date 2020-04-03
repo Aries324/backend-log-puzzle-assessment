@@ -56,9 +56,6 @@ def create_urls(urls):
     return url_returns
 
 
-read_urls('animal_code.google.com')
-
-
 def return_last_word(url):
     return re.findall(r'-(....).jpg', url)
 
