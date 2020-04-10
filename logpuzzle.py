@@ -34,18 +34,15 @@ def read_urls(filename):
     Screens out duplicate urls and returns the urls sorted into
     increasing order."""
     puzzle_urls = []
-    with open(filename, 'r') as log:
-        log_list = log.read().split('\n')
-        # log_list.filter(lambda x: 'puzzle' in x)
+    with open(filename, 'r') as log_file:
+        log_list = log_file.read().split('\n')
         log_list = list(filter(lambda x: '/puzzle/' in x, log_list))
         for url in log_list:
-            url_search = re.findall(r'GET (\S+) HTTP', url)
-            puzzle_urls.append(url_search[0])
-
+            url_result = re.findall(r'GET (\S+) HTTP', url)
+            puzzle_urls.append(url_result[0])
     url_list = create_urls(puzzle_urls)
     url_list = list(set(url_list))
     sorted_urls = sorted(url_list, key=return_last_word)
-
     return sorted_urls
 
 
@@ -68,7 +65,6 @@ def download_images(img_urls, dest_dir):
     with an img tag to show each local image file.
     Creates the directory if necessary.
     """
-    # +++your code here+++
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
         print('dir made')
@@ -104,9 +100,10 @@ def main(args):
 
     parsed_args = parser.parse_args(args)
 
-    img_urls = read_urls
+    img_urls = read_urls(parsed_args.logfile)
 
     if parsed_args.todir:
+        
         download_images(img_urls, parsed_args.todir)
 
     else:
